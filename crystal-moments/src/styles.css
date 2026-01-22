@@ -27,7 +27,7 @@ form {
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
+  margin-top: 1em;
 }
 
 .form-group label {
@@ -58,3 +58,4 @@ button[type="submit"]:hover {
   border-color: #046481;
   color: #046481;
 }
+
