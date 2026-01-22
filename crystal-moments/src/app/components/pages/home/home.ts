@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { NewMoment } from "../new-moment/new-moment";
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [NewMoment],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
