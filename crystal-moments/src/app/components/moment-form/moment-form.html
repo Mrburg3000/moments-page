@@ -22,7 +22,7 @@
   
   <div class="form-group">
     <label for="image">Share a beautiful image</label>
-    <input type="file" accept="image/*" formControlName="image" />
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
   </div>
   
   

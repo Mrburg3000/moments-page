@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class Messages {
+export class MessagesServices {
   
+  messages: string = '';
+  
+  constructor() { }
 }
