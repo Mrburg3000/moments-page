@@ -1,1 +1,19 @@
-<app-new-moment></app-new-moment>
+<div class="home-container">
+  <h1>See what's happening!</h1>
+
+  <div *ngIf="moments.length > 0; else noMoments">
+    <div class="moments-container">
+      <div class="moment" *ngFor="let moment of moments">
+        <img src="{{ baseApiUrl }}uploads/{{ moment.image }}" alt="{{ moment.title }}" />
+        <h3>{{ moment.title }}</h3>
+        <p class="date">Em: {{ moment.created_At }}</p>
+        <p>Comentários: {{ moment.comments?.length || 0 }}</p>
+        <p><a routerLink="moments/{{moment.id}}">Detalhes</a></p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noMoments>
+    <p>No moments available at the moment. Please check back later!</p>
+  </ng-template>
+</div>
