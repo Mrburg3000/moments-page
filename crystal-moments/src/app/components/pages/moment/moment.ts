@@ -6,10 +6,16 @@ import { environment } from '../../../../environments/environment';
 import { faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MessagesServices } from '../../../services/messages';
+import { NgIf, NgForOf } from "@angular/common";
+import { Comment } from '../../../Comment';
+import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
+import { CommentService } from '../../../services/comment';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-moment',
-  imports: [FaIconComponent, RouterLink],
+  imports: [FaIconComponent, RouterLink, NgIf, NgForOf, FormsModule, ReactiveFormsModule, ],
   templateUrl: './moment.html',
   styleUrl: './moment.css',
 })
@@ -20,11 +26,15 @@ export class MomentComponent implements OnInit {
   faTimes = faTimes;
   faEdit = faEdit;
 
+  commentForm!: FormGroup;
+  submitted = false;
+  
   constructor(
     private momentService: MomentService,
     private route: ActivatedRoute,
     private messagesService: MessagesServices,
     private router: Router,
+    private commentService: CommentService
   ) {}
 
   ngOnInit(): void {
@@ -40,8 +50,23 @@ export class MomentComponent implements OnInit {
         console.error('Falha ao carregar o moment:', err);
       },
     });
+    
+    this.commentForm = new FormGroup({
+      text: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+    });
+    
   }
 
+  get text() {
+    return this.commentForm.get('text');
+  }
+  
+  get username() {
+    return this.commentForm.get('username');
+  }
+  
+  
   removeHandler(id: number) {
     console.log('removeHandler chamado! ID =', id);
 
@@ -56,5 +81,27 @@ export class MomentComponent implements OnInit {
       },
     });
   }
-  cacheBuster = Date.now();  // ou new Date().getTime()
+  
+  async onSubmit(formDirective: FormGroupDirective) {
+    
+    if(this.commentForm.invalid) {
+      return
+    }
+    
+    const data: Comment = this.commentForm.value
+    
+    data.momentId = Number(this.moment!.id)
+    
+    await this.commentService .createComment(data) .subscribe((comment) => this.moment!.comments!.push(comment.data));
+    
+    this.messagesService.add("Comment Send!")
+    
+    this.commentForm.reset()
+    
+    formDirective.resetForm()
+  }
+  
+  
+  
+  cacheBuster = Date.now();  
 }
