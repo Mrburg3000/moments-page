@@ -1,6 +1,7 @@
 <div class="moment">
   <h1>{{ moment?.title }}</h1>
   <img
+    *ngIf="moment?.image"
     [src]="baseApiUrl + 'uploads/' + moment?.image + '?t=' + (cacheBuster || 0)"
     alt="{{ moment?.title }}"
   />

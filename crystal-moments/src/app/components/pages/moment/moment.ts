@@ -45,6 +45,7 @@ export class MomentComponent implements OnInit {
       next: (item) => {
         console.log('Moment carregado:', item.data);
         this.moment = item.data;
+        console.log('imagem URL:', this.baseApiUrl + 'uploads/' + this.moment.image);
       },
       error: (err) => {
         console.error('Falha ao carregar o moment:', err);

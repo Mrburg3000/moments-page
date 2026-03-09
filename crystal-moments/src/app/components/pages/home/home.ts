@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MomentService } from '../../../services/moment';
 import { Moment } from '../../../Moments';
 import { environment } from '../../../../environments/environment';
@@ -22,24 +22,24 @@ export class HomeComponent implements OnInit {
   searchTerm: string = '';
   
   
-  constructor(private momentService: MomentService, private router: Router) {}
-  
+  constructor(private momentService: MomentService, private router: Router, private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
+    console.log('ngOnInit chamado');
     this.loadMoments();
-    
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && event.url === '/') {
-        this.loadMoments();
-      }
-    });
   }
+
+
+private routerSubscription: any
   
   loadMoments(): void {
+    console.log('loadMoments chamado');
     this.momentService.getMoments().subscribe({
       next: (items) => {
         const data = items.data;
         this.allMoments = data;
         this.moments = data;
+        this.cdr.detectChanges();
       },
     });
   }
