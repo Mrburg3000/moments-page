@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Moment } from '../../../Moments';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MomentService } from '../../../services/moment';
@@ -18,7 +18,7 @@ export class EditMomentComponent implements OnInit {
   moment!: Moment;
   btnText: string = 'Update';
   
-  constructor(private momentService: MomentService, private route: ActivatedRoute, private router: Router, private messagesService: MessagesServices) {}
+  constructor(private momentService: MomentService, private route: ActivatedRoute, private router: Router, private messagesService: MessagesServices, private cdr: ChangeDetectorRef) {}
   
   
   ngOnInit(): void {
@@ -29,6 +29,7 @@ export class EditMomentComponent implements OnInit {
     next: (item) => {
       console.log('Moment edit carregado:', item.data);
       this.moment = item.data;
+      this.cdr.detectChanges();
     },
     error: (err) => {
       console.error('Erro ao carregar moment para editar:', err);
