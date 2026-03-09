@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MomentService } from '../../../services/moment';
 import { Moment } from '../../../Moments';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
@@ -34,7 +34,8 @@ export class MomentComponent implements OnInit {
     private route: ActivatedRoute,
     private messagesService: MessagesServices,
     private router: Router,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +46,7 @@ export class MomentComponent implements OnInit {
       next: (item) => {
         console.log('Moment carregado:', item.data);
         this.moment = item.data;
+        this.cdr.detectChanges();
         console.log('imagem URL:', this.baseApiUrl + 'uploads/' + this.moment.image);
       },
       error: (err) => {
