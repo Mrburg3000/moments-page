@@ -22,11 +22,19 @@ export class EditMomentComponent implements OnInit {
   
   
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.momentService.getMoment(id).subscribe((item) => {
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  console.log('ID edit:', id);
+  
+  this.momentService.getMoment(id).subscribe({
+    next: (item) => {
+      console.log('Moment edit carregado:', item.data);
       this.moment = item.data;
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Erro ao carregar moment para editar:', err);
+    }
+  });
+}
   
   async editHandler(momentData: Moment) {
     
