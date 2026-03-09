@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Moment } from '../../Moments';
 
@@ -8,7 +8,7 @@ import { Moment } from '../../Moments';
   templateUrl: './moment-form.html',
   styleUrl: './moment-form.css',
 })
-export class MomentForm implements OnInit {
+export class MomentForm implements OnInit, OnChanges {
   @Output() onsubmit = new EventEmitter<Moment>();
   @Input() btnText: string = '';
   @Input() momentData: Moment | null = null;
@@ -27,6 +27,16 @@ export class MomentForm implements OnInit {
     })
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['momentData'] && this.momentData && this.momentForm) {
+      this.momentForm.patchValue({
+        id: this.momentData.id,
+        title: this.momentData.title,
+        description: this.momentData.description,
+      });
+    }
+  }
+  
   get title() {
     return this.momentForm.get('title');
   }
